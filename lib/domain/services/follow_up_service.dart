@@ -33,15 +33,15 @@ class FollowUpService {
   Future<void> _checkAndNotify() async {
     // 1. Check Office Hours
     // DEBUG: Commented out for testing so notifications work immediately
-    // final now = DateTime.now();
-    // final isWorkingDay = await _isWorkingDay(now);
-    // if (!isWorkingDay) return;
-    //
-    // final isOfficeHours = await _isOfficeHours(now);
-    // if (!isOfficeHours) return;
+    final now = DateTime.now();
+    final isWorkingDay = await _isWorkingDay(now);
+    if (!isWorkingDay) return;
+
+    final isOfficeHours = await _isOfficeHours(now);
+    if (!isOfficeHours) return;
 
     // Use 'now' for further calculations
-    final now = DateTime.now();
+    // final now = DateTime.now();
 
     // 2. Fetch Active Loans with Follow-up enabled
     // Optimally, repository should have getActiveFollowUps(), but getAllLoans is fine for now (local db)
