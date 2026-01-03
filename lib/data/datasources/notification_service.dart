@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:audit2fund/domain/entities/loan_file.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -14,11 +15,13 @@ class NotificationService {
       '@mipmap/ic_launcher',
     );
 
-    // Request permissions immediately on init for simpler flow
+    // Don't request permissions immediately on init if we want to defer it to the button tap
+    // But keeping it true is fine as long as we haven't inited yet.
+    // However, to be safe and explicit, let's set them to false here and request manually.
     const macOsSettings = DarwinInitializationSettings(
-      requestAlertPermission: true,
-      requestBadgePermission: true,
-      requestSoundPermission: true,
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
     );
 
     const linuxSettings = LinuxInitializationSettings(
@@ -53,11 +56,14 @@ class NotificationService {
           >();
       return await androidImplementation?.requestNotificationsPermission();
     } else if (Platform.isMacOS) {
-      return await _notificationsPlugin
+      debugPrint('Requesting macOS permissions...');
+      final result = await _notificationsPlugin
           .resolvePlatformSpecificImplementation<
             MacOSFlutterLocalNotificationsPlugin
           >()
           ?.requestPermissions(alert: true, badge: true, sound: true);
+      debugPrint('macOS permissions result: $result');
+      return result;
     }
     return false;
   }
