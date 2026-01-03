@@ -14,13 +14,11 @@ class NotificationService {
       '@mipmap/ic_launcher',
     );
 
-    // Don't request permissions immediately on init if we want to defer it to the button tap
-    // But keeping it true is fine as long as we haven't inited yet.
-    // However, to be safe and explicit, let's set them to false here and request manually.
+    // Request permissions immediately on init for simpler flow
     const macOsSettings = DarwinInitializationSettings(
-      requestAlertPermission: false,
-      requestBadgePermission: false,
-      requestSoundPermission: false,
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
     );
 
     const linuxSettings = LinuxInitializationSettings(
