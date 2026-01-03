@@ -25,7 +25,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   void initState() {
     super.initState();
     // Start background service for notifications
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await ref.read(notificationServiceProvider).requestPermissions();
       ref.read(followUpServiceProvider).startService();
     });
   }
